@@ -1914,7 +1914,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      carts: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("/").then(function (res) {
+      _this.carts = res.data[1];
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  },
+  computed: {
+    productPrice: function productPrice() {
+      return this.carts[0].product.price * this.carts[0].quantity;
+    }
+  }
+});
 
 /***/ }),
 
@@ -1942,9 +2003,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  data: function data() {
+    return {
+      products: []
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("/").then(function (res) {
+      _this.products = res.data[0]; // console.log(res.data[0]);
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  },
+  methods: {
+    addToCart: function addToCart() {
+      alert('Product have been added');
+    }
   }
 });
 
@@ -37532,9 +37637,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    cart\n")])
+  return _c("div", { staticClass: "card" }, [
+    _c("div", { staticClass: "card-header" }, [
+      _vm._v("\n        My Cart\n    ")
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table-auto items-center" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        [
+          Object.keys(_vm.carts).length > 0
+            ? _vm._l(_vm.carts, function(cart, index) {
+                return _c("tr", { key: cart.id }, [
+                  _c("td", { staticClass: "border px-4 py-2" }, [
+                    _vm._v(_vm._s(index + 1))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "border px-4 py-2" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(cart.product.name) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "border px-4 py-2" }, [
+                    _vm._v(_vm._s(cart.quantity))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "border px-4 py-2" }, [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(_vm.productPrice) +
+                        "\n                    "
+                    )
+                  ])
+                ])
+              })
+            : _vm._e(),
+          _vm._v(" "),
+          Object.keys(_vm.carts).length == 0 ? [_vm._m(1)] : _vm._e()
+        ],
+        2
+      )
+    ]),
+    _vm._v(" "),
+    _vm._m(2)
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "px-4 py-2" }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "px-4 py-2" }, [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "px-4 py-2" }, [_vm._v("Quantity")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "px-4 py-2" }, [_vm._v("Price(RM)")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: "text-center" }, [
+      _c("td", { attrs: { colspan: "5" } }, [
+        _c("div", { staticClass: "alert-warning p-2" }, [
+          _vm._v("No Record ..")
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass:
+            "bg-blue-400 hover:bg-red-300 p-2 text-white font-bold py-2 px-4 border border-blue-700 rounded",
+          attrs: { type: "button" }
+        },
+        [_vm._v("\n            Checkout\n        ")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -37556,27 +37754,93 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "card" }, [
+          _c(
+            "div",
+            { staticClass: "card-header bg-red-300 text-white font-bold" },
+            [_vm._v("List of Product")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("table", { staticClass: "table-auto items-center" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                [
+                  Object.keys(_vm.products).length > 0
+                    ? _vm._l(_vm.products, function(product, index) {
+                        return _c("tr", { key: product.id }, [
+                          _c("td", { staticClass: "border px-4 py-2" }, [
+                            _vm._v(_vm._s(index + 1))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "border px-4 py-2" }, [
+                            _vm._v(_vm._s(product.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "border px-4 py-2" }, [
+                            _vm._v(_vm._s(product.price))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticClass: "border px-4 py-2" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "bg-blue-500 hover:bg-red-300 text-white font-bold py-2 px-4 border border-blue-700 rounded",
+                                on: { click: _vm.addToCart }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                       Add to cart\n                                    "
+                                )
+                              ]
+                            )
+                          ])
+                        ])
+                      })
+                    : _vm._e(),
+                  _vm._v(" "),
+                  Object.keys(_vm.products).length == 0 ? [_vm._m(1)] : _vm._e()
+                ],
+                2
+              )
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-header" }, [
-              _vm._v("Home Component")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an Home component.sdsadsadsasaddsad\n                "
-              )
-            ])
-          ])
+    return _c("thead", { staticClass: "bg-secondary text-white" }, [
+      _c("tr", [
+        _c("th", { staticClass: "px-4 py-2" }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "px-4 py-2" }, [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "px-4 py-2" }, [_vm._v("Price (RM)")]),
+        _vm._v(" "),
+        _c("th", { staticClass: "px-4 py-2" })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", { staticClass: "text-center" }, [
+      _c("td", { attrs: { colspan: "5" } }, [
+        _c("div", { staticClass: "alert-warning p-2" }, [
+          _vm._v("No Record ..")
         ])
       ])
     ])
@@ -49764,9 +50028,10 @@ module.exports = function(module) {
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+
 __webpack_require__(/*! ./v-components */ "./resources/js/v-components.js");
 
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 var app = new Vue({
   el: '#app'
 });

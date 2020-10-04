@@ -5,10 +5,10 @@
  */
 
 require('./bootstrap');
-require('./v-components')
-
 
 window.Vue = require('vue');
+
+require('./v-components')
 const app = new Vue({
     el: '#app',
 });

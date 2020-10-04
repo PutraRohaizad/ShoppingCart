@@ -63,10 +63,10 @@
             </div>
         </nav>
         <main class="py-4">
-            {{-- @yield('content') --}}
-            <home-component/>
-            <cart-component/>
+            @yield('content')
         </main>
+
+      
     </div>
 
     <script src="/resources/js/app.js"></script>
