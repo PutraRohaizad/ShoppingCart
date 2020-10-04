@@ -18,10 +18,10 @@
                                 <template v-if="Object.keys(products).length > 0">
                                 <tr :key="product.id" v-for="(product, index) in products">
                                     <td class="border px-4 py-2">{{ index + 1 }}</td>
-                                    <td class="border px-4 py-2">{{ product.name }}</td>
+                                    <td class="border px-4 py-2" >{{ product.name }}</td>
                                     <td class="border px-4 py-2">{{ product.price }}</td>
                                     <td class="border px-4 py-2">
-                                       <button class="bg-blue-500 hover:bg-red-300 text-white font-bold py-2 px-4 border border-blue-700 rounded" @click="addToCart">
+                                       <button class="bg-blue-500 hover:bg-red-300 text-white font-bold py-2 px-4 border border-blue-700 rounded" @click.prevent="addToCart">
                                            Add to cart
                                         </button>
                                     </td>
@@ -45,21 +45,30 @@
 export default {
     data() {
         return {
-            products: []
+            products: [],
+            users: [],
+      
         };
     },
     created() {
-        axios
-            .get("/")
+        axios.get("/")
             .then(res => {
-                this.products = res.data[0];
-                // console.log(res.data[0]);
+                this.products = res.data[0]
+                this.users = res.data[2];
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     },
     methods:{
         addToCart(){
-            alert('Product have been added')
+            axios.post('/addcart', {
+                user_id: this.users[0].id   
+            })
+            .then(res => {
+                console.log(res);
+                const data = res.data;
+                this.products.push(res.data);
+            })
+            .catch(err => console.error(err));
         }
     }
 };

@@ -58,7 +58,7 @@ export default {
             .then(res => {
                 this.carts = res.data[1];
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(err));
     },
     computed: {
         productPrice:function() {  

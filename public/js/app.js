@@ -1967,7 +1967,7 @@ __webpack_require__.r(__webpack_exports__);
     axios.get("/").then(function (res) {
       _this.carts = res.data[1];
     })["catch"](function (err) {
-      return console.log(err);
+      return console.error(err);
     });
   },
   computed: {
@@ -2034,21 +2034,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      products: []
+      products: [],
+      users: []
     };
   },
   created: function created() {
     var _this = this;
 
     axios.get("/").then(function (res) {
-      _this.products = res.data[0]; // console.log(res.data[0]);
+      _this.products = res.data[0];
+      _this.users = res.data[2];
     })["catch"](function (err) {
-      return console.log(err);
+      return console.error(err);
     });
   },
   methods: {
     addToCart: function addToCart() {
-      alert('Product have been added');
+      var _this2 = this;
+
+      axios.post('/addcart', {
+        user_id: this.users[0].id
+      }).then(function (res) {
+        console.log(res);
+        var data = res.data;
+
+        _this2.products.push(res.data);
+      })["catch"](function (err) {
+        return console.error(err);
+      });
     }
   }
 });
@@ -37792,7 +37805,12 @@ var render = function() {
                               {
                                 staticClass:
                                   "bg-blue-500 hover:bg-red-300 text-white font-bold py-2 px-4 border border-blue-700 rounded",
-                                on: { click: _vm.addToCart }
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.addToCart($event)
+                                  }
+                                }
                               },
                               [
                                 _vm._v(
