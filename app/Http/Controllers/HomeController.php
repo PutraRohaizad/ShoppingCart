@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cart;
+use App\Order;
 use App\Product;
 use App\User;
 use Illuminate\Http\Request;
@@ -28,13 +29,14 @@ class HomeController extends Controller
     {   
         $products = Product::get();
         $users = User::get();
-        $carts = Cart::with('user', 'product')->get();
+        $carts = Cart::with('user', 'product')->where('user_id',auth()->user()->id)->get();
+        $orders = Order::where('user_id',auth()->user()->id)->get();
 
          if($request->wantsJson()){
             return [$products, $carts, $users];
         }
 
-        return view('home', compact('products', 'users', 'carts'));
+        return view('home', compact('products', 'users', 'carts', 'orders'));
     }
 
     public function addcart(Request $request)
@@ -42,18 +44,40 @@ class HomeController extends Controller
         $request->validate([
             'quantity' => 'required'
         ]);
-
+        
+        // Checking if record already exist add the quantity
+        $id = $request->input('product_id');
+        $quantity = $request->input('quantity');
+        $qcart = Cart::query()->where('product_id', $id)->where('user_id', auth()->user()->id)->first();
+        if($qcart != null){
+            $qcart->quantity = $qcart->quantity + $quantity;
+            $qcart->save();
+        }
+        else{
         $cart = new Cart;
         $cart->user_id = auth()->user()->id; 
-        $cart->product_id = $request->input('id'); 
+        $cart->product_id = $request->input('product_id'); 
         $cart->quantity = $request->input('quantity'); 
         $cart->save();
+        }
 
         return redirect()->route('index')->with(['success' => 'The record have been add to your cart']);
     }
 
     public function checkout()
     {
-        dd(124);
+        $qcarts = Cart::query()->where('user_id', auth()->user()->id)->get();
+        foreach($qcarts as $cart){
+            $order = new Order;
+            $order->user_id = $cart->user_id;
+            $order->product_id = $cart->product_id;
+            $order->quantity = $cart->quantity;
+            $order->save();
+            $cart->delete();
+        }
+
+
+        return redirect()->back()->with(['success' => 'Your Order has been sent!! :)']);
+
     }
 }

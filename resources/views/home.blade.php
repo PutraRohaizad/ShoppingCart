@@ -48,6 +48,35 @@
                     </table>
                 </div>
             </div>
+            @if (count($orders) > 0)
+            <div class="card mt-3">
+                <div class="card-header bg-green-300 font-bold">Your Orders</div>
+                <div class="card-body">
+                    <table class="table-auto items-center">
+                        <thead class="bg-secondary text-white">
+                            <tr>
+                                <th class="px-4 py-2">#</th>
+                                <th class="px-4 py-2">Name</th>
+                                <th class="px-4 py-2">Quantity</th>
+                                <th class="px-4 py-2">Total Price(RM)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($orders as $order)
+                            <tr>
+                                <td class="border px-4 py-2" >{{$loop->index + 1}}</td>
+                                <td class="border px-4 py-2">{{$order->product->name}}</td>
+                                <td class="border px-4 py-2">{{$order->quantity}}</td>
+                                <td class="border px-4 py-2">{{$order->product->price * $order->quantity}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+           
+            
         </div>
         <div class="col-md-4">
             {{-- <cart-component /> --}}
@@ -55,13 +84,14 @@
                 <div class="card-header">
                     My Cart
                 </div>
+               <div class="table-responsive">
                 <table class="table-auto items-center">
                     <thead>
                         <tr>
                             <th class="px-4 py-2">#</th>
                             <th class="px-4 py-2">Name</th>
                             <th class="px-4 py-2">Quantity</th>
-                            <th class="px-4 py-2">Price(RM)</th>
+                            <th class="px-4 py-2" nowrap>Total (RM)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,21 +100,25 @@
                             <td class="border px-4 py-2" >{{$loop->index + 1}}</td>
                             <td class="border px-4 py-2">{{$cart->product->name}}</td>
                             <td class="border px-4 py-2">{{$cart->quantity}}</td>
-                            <td class="border px-4 py-2">{{$cart->product->price}}</td>
+                            <td class="border px-4 py-2">{{$cart->product->price * $cart->quantity}}</td>
                         </tr>
                         @empty
-                            
+                            <tr>
+                                <td colspan="5"><div class="alert-warning p-2 text-center">Your cart is empty :(</div></td>
+                            </tr>
                         @endforelse
                        
                     </tbody>
                 </table>
+               </div>
                 <div class="card-footer">
-                    <button
-                        class="bg-blue-400 hover:bg-red-300 p-2 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                        type="button"
-                    >
+                    <form action="{{route('checkout')}}" method="POST">
+                    @csrf
+                    <button class="bg-blue-400 hover:bg-red-300 p-2 text-white font-bold py-2 px-4 border border-blue-700 rounded">
                         Checkout
                     </button>
+                    </form>
+                   
                 </div>
             </div>
         </div>
@@ -93,5 +127,8 @@
 @endsection
 
 <script>
-    const total = {{$cart->quantity}} * {{$cart->product->price}};
+    setTimeout(function(){
+        document.querySelector('.alert').remove()
+    }, 2000)
 </script>
+

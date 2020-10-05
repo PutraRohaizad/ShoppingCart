@@ -13,7 +13,7 @@
                 <form action="{{route('addcart')}}" method="POST">
                     @csrf
                     <div class=" p-2">
-                        <input type="hidden" name="id" value="{{$product->id}}">
+                        <input type="hidden" name="product_id" value="{{$product->id}}">
                         <label for="name">Name:</label>
                         <input name="name" value="{{$product->name}}" readonly />
                         <hr>
