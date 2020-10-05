@@ -27,7 +27,13 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {   
-        $products = Product::get();
+        $qproduct = Product::query();
+
+        if($name = $request->input('name')){
+            $qproduct->where('name', 'like', "%$name%");
+        }
+        $products =  $qproduct->get();
+
         $users = User::get();
         $carts = Cart::with('user', 'product')->where('user_id',auth()->user()->id)->get();
         $orders = Order::where('user_id',auth()->user()->id)->get();

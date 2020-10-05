@@ -10,6 +10,15 @@
 <div class="container mt-2">
     <div class="row">
         <div class="col-md-8">
+            <div>
+                <form>
+                    <input type="text" class="form-control" name="name" placeholder="Filter">
+                   <div class="m-2">
+                    <button class="btn btn-sm btn-secondary" type="reset">Reset</button>
+                    <button class="btn btn-sm btn-primary">Search</button>
+                   </div>
+                </form>
+            </div>
             {{-- Vue Home Copmpomenet --}}
             {{-- <home-component /> --}}
             <div class="card">
@@ -39,11 +48,10 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr colspan="5">
-                                <div class="alert-warning p-3">No record ...</div>
+                            <tr>
+                                <td colspan="5"><div class="alert-warning p-3 text-center">No product can be found ...</div></td>
                             </tr>
                             @endforelse
-
                         </tbody>
                     </table>
                 </div>
